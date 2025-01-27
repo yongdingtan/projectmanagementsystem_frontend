@@ -37,6 +37,6 @@ export const subscriptiontReducer = (state=initialState, action) => {
                 error: action.payload
             }
         default:
-            state;
+           return state;
     }
 }

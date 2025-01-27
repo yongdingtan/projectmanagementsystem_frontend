@@ -61,6 +61,6 @@ export const issueReducer = (state=initialState, action) => {
                 error: action.error
             }
         default:
-            state;
+            return state;
     }
 }
