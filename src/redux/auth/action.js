@@ -1,6 +1,7 @@
 import axios from "axios"
 import { API_BASE_URL } from "../../config/api"
 import * as actionType from "./actionType"
+import { fetchProjects } from "../project/action"
 
 export const register = userData => async (dispatch) => {
     dispatch({ type: actionType.REGISTER_REQUEST })
@@ -25,6 +26,7 @@ export const login = userData => async (dispatch) => {
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt)
             dispatch({ type: actionType.LOGIN_SUCCESS, payload: data })
+            dispatch(fetchProjects({}))
         }
 
         console.log("login success: ", data)

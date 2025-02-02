@@ -10,16 +10,20 @@ import {
 import { Button } from '@/components/ui/Button'
 import { Badge } from "@/components/ui/badge"
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { deleteProject } from '../../redux/project/action'
 
 const ProjectCard = ({ item }) => {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
     return (
         <Card className='p-5 w-full lg:max-w-3xl'>
             <div className='space-y-5'>
                 <div className='space-y-2'>
                     <div className='flex justify-between'>
                         <div className='flex items-center gap-5'>
-                            <h1 onClick={() => navigate("/project/3")} className='cursor-pointer font-bold text-lg'>
+                            <h1 onClick={() => navigate(`/project/${item.id}`)} className='cursor-pointer font-bold text-lg'>
                                 {item.name}
                             </h1>
                             <DotFilledIcon />
@@ -37,7 +41,9 @@ const ProjectCard = ({ item }) => {
                                         Update
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        Delete
+                                        <button onClick={() => dispatch(deleteProject(item.id))}>
+                                            Delete
+                                        </button>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

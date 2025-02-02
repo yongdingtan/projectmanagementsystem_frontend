@@ -44,14 +44,14 @@ export const projectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading:false,
-                projectDetails: action.project,
+                project: action.payload,
                 error:null
             }
         case DELETE_PROJECT_SUCCESS:
             return {
                 ...state,
                 loading:false,
-                project:state.project.filter(project => project.id === action.projectId),
+                project:state.project.filter(project => project.id !== action.projectId),
                 error:null
             }
 

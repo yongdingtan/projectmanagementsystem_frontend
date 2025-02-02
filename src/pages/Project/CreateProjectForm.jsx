@@ -11,20 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { tags } from "../ProjectList/ProjectList"
 import { Cross1Icon } from "@radix-ui/react-icons"
 import { useDispatch } from "react-redux"
 import { createProject } from "../../redux/project/action";
+import { tags } from "../ProjectList/tags"
 
 const CreateProjectForm = () => {
 
   const dispatch = useDispatch()
 
-  const handleTagsChange = (tag) => {
-    const currentTags = form.getValues("tags") 
-    const updateTags = currentTags.includes(tag) ? currentTags.filter(item => item !== tag) : [...currentTags, tag]
-    form.setValue("tags", updateTags)
-  }
   const form = useForm({
     defaultValues: {
       name: "",
@@ -34,9 +29,17 @@ const CreateProjectForm = () => {
     }
   })
 
-  const onSubmit = (data) => { 
+  const handleTagsChange = (tag) => {
+    const currentTags = form.getValues("tags")
+    const updateTags = currentTags.includes(tag) ? currentTags.filter(item => item !== tag) : [...currentTags, tag]
+    form.setValue("tags", updateTags)
+  }
+
+
+  const onSubmit = (data) => {
     dispatch(createProject(data))
-    console.log("Create project data", data) }
+    console.log("Create project data", data)
+  }
 
   return (
     <div>
@@ -50,7 +53,7 @@ const CreateProjectForm = () => {
                   type="text"
                   className="border w-full border-gray-700 py-5 px-5"
                   placeholder="Project Name"
-                  defaultValue="" />
+                />
               </FormControl>
               <FormMessage />
             </FormItem>} />
@@ -61,7 +64,7 @@ const CreateProjectForm = () => {
                 <Input {...field}
                   type="text"
                   className="border w-full border-gray-700 py-5 px-5"
-                  placeholder="Project Description"/>
+                  placeholder="Project Description" />
               </FormControl>
               <FormMessage />
             </FormItem>} />
@@ -72,7 +75,7 @@ const CreateProjectForm = () => {
                 <Select
                   onValueChange={(value) => field.onChange(value)}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Category"/>
+                    <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="fullStack">
@@ -89,30 +92,34 @@ const CreateProjectForm = () => {
               </FormControl>
               <FormMessage />
             </FormItem>} />
-          <FormField control={form.control}
-            name="tags"
-            render={({ field }) => <FormItem>
-              <FormControl>
-                <Select
-                  onValueChange={(value) => handleTagsChange(value)}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Tags" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {tags.map((item) => <SelectItem key={item} value={item}>
-                      {item}
-                    </SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <div className="flex gap-1 flex-wrap" defaultValue="">
-                {field.value.map((item) => <div key={item} onClick={() => handleTagsChange(item)} className="cursor-pointer flex rounded-full items-center border gap-3 px-2 py-1">
-                  <span className="text-sm">{item}</span>
-                  <Cross1Icon className="h-3 w-3" />
-                </div>)}
-              </div>
-              <FormMessage />
-            </FormItem>}/>
+          <FormField control={form.control} name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Select onValueChange={handleTagsChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Tags" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {tags.map((item) => (
+                        <SelectItem key={item} value={item}>{item}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <div className="flex gap-1 flex-wrap">
+                  {field.value?.map((item) => (
+                    <div key={item} onClick={() => handleTagsChange(item)}
+                      className="cursor-pointer flex rounded-full items-center border gap-3 px-2 py-1">
+                      <span className="text-sm">{item}</span>
+                      <Cross1Icon className="h-3 w-3" />
+                    </div>
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <DialogClose>
             {false ? (<div><p>You can only create 3 projects with the free plan. Upgrade to create more projects.</p></div>)
               : (<Button type="submit" className="w-full mt-5">Create Project</Button>)}

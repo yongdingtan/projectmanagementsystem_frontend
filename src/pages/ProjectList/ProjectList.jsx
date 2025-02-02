@@ -1,42 +1,35 @@
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { MagnifyingGlassIcon, MixerHorizontalIcon } from '@radix-ui/react-icons'
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Input } from "@/components/ui/input"
-import { useState } from 'react'
-import ProjectCard from '../Project/ProjectCard'
-import { useSelector } from 'react-redux'
-export const tags = [
-    "all", "react", "spring", "mysql", "angular", "mongodb", "nodejs", "express", "java", "python", "django", "flask", "c#", "asp.net", "sql", "postgresql", "oracle", "firebase", "aws", "azure", "gcp", "docker", "kubernetes", "jenkins"
-]
-const ProjectList = () => {
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { MagnifyingGlassIcon, MixerHorizontalIcon } from '@radix-ui/react-icons';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import ProjectCard from '../Project/ProjectCard';
+import { useSelector } from 'react-redux';
+import { tags } from './tags';
 
-    const {project} = useSelector(store => store)
+const ProjectList = () => {
+    const { project } = useSelector((store) => store.project) // Access the correct state
     const [keyword, setKeyword] = useState('')
+
     const handleFilterChange = (section) => {
         console.log("value = ", section)
-    }
+    };
 
     const handleSearchChange = (e) => {
-        setKeyword(e.target.value)
-    }
-
-
+        setKeyword(e.target.value.trim().toLowerCase())
+    };
 
     return (
         <div className='relative px-5 lg:px-0 lg:flex gap-5 justify-center py-5'>
             <section className='filterSection'>
                 <Card className='p-5 sticky top-10'>
                     <div className='flex justify-between lg:w-[20rem]'>
-                        <p className='text-xl -tracking-wider'>
-                            Filters
-                        </p>
+                        <p className='text-xl -tracking-wider'>Filters</p>
                         <Button variant="ghost" size='icon'>
-                            <MixerHorizontalIcon>
-
-                            </MixerHorizontalIcon>
+                            <MixerHorizontalIcon />
                         </Button>
                     </div>
                     <CardContent className='mt-5'>
@@ -65,10 +58,12 @@ const ProjectList = () => {
                                 <h1 className='pb-3 text-gray-400 border-b'>Tag</h1>
                                 <div className='pt-5'>
                                     <RadioGroup className='space-y-3 pt-5' defaultValue="all" onValueChange={(value) => handleFilterChange(value)}>
-                                        {tags.map((item) => <div key={item} className='flex items-center gap-2'>
-                                            <RadioGroupItem value={item} id={`r1-${item}`} className='radio-item' />
-                                            <Label htmlFor={`r1-${item}`}>{item}</Label>
-                                        </div>)}
+                                        {tags.map((item) => (
+                                            <div key={item} className='flex items-center gap-2'>
+                                                <RadioGroupItem value={item} id={`r1-${item}`} className='radio-item' />
+                                                <Label htmlFor={`r1-${item}`}>{item}</Label>
+                                            </div>
+                                        ))}
                                     </RadioGroup>
                                 </div>
                             </div>
@@ -76,7 +71,7 @@ const ProjectList = () => {
                     </CardContent>
                 </Card>
             </section>
-            <section className='projectListSection w-full lg:w-[48rem'>
+            <section className='projectListSection w-full lg:w-[48rem]'>
                 <div className='flex gap-2 items-center pb-5 justify-between'>
                     <div className='relative p-0 w-full'>
                         <Input
@@ -88,17 +83,22 @@ const ProjectList = () => {
                     </div>
                 </div>
                 <div>
-                    <div className='space-y-5 min-h-[74vh]'>
-                        {
-                            keyword
-                                ? [1, 1, 1].map((item) => <ProjectCard key={item} />)
-                                : project.project?.map((item) => (<ProjectCard key={item.id} item={item} />))
-                        }
+                    <div className="space-y-5 min-h-[74vh]">
+                        {project?.length > 0 ? (
+                            project
+                                .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) // Filtering logic
+                                .map((item) => (
+                                    <ProjectCard key={item.id} item={item} />
+                                ))
+                        ) : (
+                            <div>No project found</div> // Message when no project matches the filter
+                        )}
+
                     </div>
                 </div>
             </section>
         </div>
-    )
-}
+    );
+};
 
-export default ProjectList
+export default ProjectList;
