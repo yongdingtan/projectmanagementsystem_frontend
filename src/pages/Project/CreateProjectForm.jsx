@@ -13,8 +13,12 @@ import {
 } from "@/components/ui/select"
 import { tags } from "../ProjectList/ProjectList"
 import { Cross1Icon } from "@radix-ui/react-icons"
+import { useDispatch } from "react-redux"
+import { createProject } from "../../redux/project/action";
 
 const CreateProjectForm = () => {
+
+  const dispatch = useDispatch()
 
   const handleTagsChange = (tag) => {
     const currentTags = form.getValues("tags") 
@@ -30,7 +34,9 @@ const CreateProjectForm = () => {
     }
   })
 
-  const onSubmit = (data) => { console.log("Create project data", data) }
+  const onSubmit = (data) => { 
+    dispatch(createProject(data))
+    console.log("Create project data", data) }
 
   return (
     <div>

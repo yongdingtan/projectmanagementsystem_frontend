@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import api from "../../config/api"
 import { ACCEPT_INVITATION_REQUEST, ACCEPT_INVITATION_SUCCESS, CREATE_PROJECT_REQUEST, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, FETCH_PROJECT_BY_ID_REQUEST, FETCH_PROJECT_BY_ID_SUCCESS, FETCH_PROJECT_REQUEST, FETCH_PROJECT_SUCCESS, INVITE_TO_PROJECT_REQUEST, INVITE_TO_PROJECT_SUCCESS, SEARCH_PROJECT_REQUEST, SEARCH_PROJECT_SUCCESS } from "./actionType"
 
@@ -29,8 +30,8 @@ export const createProject = (projectData) => async(dispatch) => {
 
     dispatch({type:CREATE_PROJECT_REQUEST})
     try {
-        const {data} = await api.post("/api/project" + projectData)
-        console.log("Searched projects: ", data)
+        const {data} = await api.post("/api/project", projectData)
+        console.log("Created project: ", data)
         dispatch({type:CREATE_PROJECT_SUCCESS, project:data})
     } catch (error) {
         console.log(error)

@@ -23,7 +23,7 @@ export const projectReducer = (state = initialState, action) => {
             }
         case FETCH_PROJECT_SUCCESS:
             return {
-                ...state, loading: false, project: action.payload,
+                ...state, loading: false, project: action.project,
                 error: null
             }
         case SEARCH_PROJECT_SUCCESS:

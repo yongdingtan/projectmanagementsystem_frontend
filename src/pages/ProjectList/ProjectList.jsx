@@ -7,11 +7,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { useState } from 'react'
 import ProjectCard from '../Project/ProjectCard'
+import { useSelector } from 'react-redux'
 export const tags = [
     "all", "react", "spring", "mysql", "angular", "mongodb", "nodejs", "express", "java", "python", "django", "flask", "c#", "asp.net", "sql", "postgresql", "oracle", "firebase", "aws", "azure", "gcp", "docker", "kubernetes", "jenkins"
 ]
 const ProjectList = () => {
 
+    const {project} = useSelector(store => store)
     const [keyword, setKeyword] = useState('')
     const handleFilterChange = (section) => {
         console.log("value = ", section)
@@ -90,7 +92,7 @@ const ProjectList = () => {
                         {
                             keyword
                                 ? [1, 1, 1].map((item) => <ProjectCard key={item} />)
-                                : [1, 1, 1, 1, 1].map((item) => (<ProjectCard key={item} />))
+                                : project.project?.map((item) => (<ProjectCard key={item.id} item={item} />))
                         }
                     </div>
                 </div>
