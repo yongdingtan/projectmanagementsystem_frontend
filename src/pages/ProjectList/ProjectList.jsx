@@ -7,19 +7,31 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { useState } from 'react';
 import ProjectCard from '../Project/ProjectCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { tags } from './tags';
+import { fetchProjects, searchProjects } from '../../redux/project/action';
 
 const ProjectList = () => {
     const { project } = useSelector((store) => store.project) // Access the correct state
     const [keyword, setKeyword] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('all'); // Track selected category
+    const [selectedTag, setSelectedTag] = useState('all'); // Track selected tag
+    const dispatch = useDispatch()
 
-    const handleFilterChange = (section) => {
-        console.log("value = ", section)
+    const handleFilterCategory = (value) => {
+        setSelectedCategory(value); // Update selected category
+        dispatch(fetchProjects({ category: value, tag: selectedTag })); // Include both category and tag
+    };
+
+    const handleFilterTag = (tag) => {
+        setSelectedTag(tag); // Update selected tag
+        dispatch(fetchProjects({ category: selectedCategory, tag })); // Include both category and tag
     };
 
     const handleSearchChange = (e) => {
-        setKeyword(e.target.value.trim().toLowerCase())
+        const searchTerm = e.target.value.trim().toLowerCase();
+        setKeyword(searchTerm);
+        dispatch(searchProjects({ search: searchTerm}));
     };
 
     return (
@@ -35,9 +47,13 @@ const ProjectList = () => {
                     <CardContent className='mt-5'>
                         <ScrollArea className='space-y-7 h-[70vh]'>
                             <div>
-                                <h1 className='pb-3 text-gray-400 border-b'>Project List</h1>
+                                <h1 className='pb-3 text-gray-400 border-b'>Category</h1>
                                 <div className='pt-5'>
-                                    <RadioGroup className='space-y-3 pt-5' defaultValue="all" onValueChange={(value) => handleFilterChange(value)}>
+                                    <RadioGroup className='space-y-3 pt-5' defaultValue="all" onValueChange={(value) => handleFilterCategory(value)}>
+                                        <div className='flex items-center gap-2'>
+                                            <RadioGroupItem value='all' id="all" className='radio-item' />
+                                            <Label htmlFor="all">All</Label>
+                                        </div>
                                         <div className='flex items-center gap-2'>
                                             <RadioGroupItem value='fullStack' id="fullStack" className='radio-item' />
                                             <Label htmlFor="fullStack">Full Stack</Label>
@@ -57,7 +73,7 @@ const ProjectList = () => {
                             <div className='pt-9'>
                                 <h1 className='pb-3 text-gray-400 border-b'>Tag</h1>
                                 <div className='pt-5'>
-                                    <RadioGroup className='space-y-3 pt-5' defaultValue="all" onValueChange={(value) => handleFilterChange(value)}>
+                                    <RadioGroup className='space-y-3 pt-5' defaultValue="all" onValueChange={(value) => handleFilterTag(value)}>
                                         {tags.map((item) => (
                                             <div key={item} className='flex items-center gap-2'>
                                                 <RadioGroupItem value={item} id={`r1-${item}`} className='radio-item' />
@@ -84,7 +100,7 @@ const ProjectList = () => {
                 </div>
                 <div>
                     <div className="space-y-5 min-h-[74vh]">
-                        {project?.length > 0 ? (
+                        {project && project.length > 0 ? (
                             project
                                 .filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) // Filtering logic
                                 .map((item) => (
