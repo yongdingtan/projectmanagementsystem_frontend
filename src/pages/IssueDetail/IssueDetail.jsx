@@ -13,22 +13,32 @@ import {
 } from "@/components/ui/select"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { fetchIssueById, updateIssueStatus } from "../../redux/issue/action"
 
 const IssueDetail = () => {
     const { projectId, issueId } = useParams()
-    const handleUpdateIssueStatus = (status) => {
-        console.log(status)
+    const dispatch = useDispatch()
+    const { issue } = useSelector(store => store)
+    const handleUpdateIssueStatus = async (status) => {
+        await dispatch(updateIssueStatus(issueId, status))
+        dispatch(fetchIssueById(issueId));
     }
+    useEffect(() => {
+        dispatch(fetchIssueById(issueId));
+    }, [issueId, dispatch]); // Correct dependency array
+
 
     return (
         <div className="px-20 py-8 text-gray-400">
             <div className="flex justify-between border p-10 rounded-lg">
                 <ScrollArea className="h-[80vh] w-[60%]">
                     <div>
-                        <h1 className="text-lg font-semibold text-gray-400">Create Navbar</h1>
+                        <h1 className="text-lg font-semibold text-gray-400">{issue.issueDetails?.title}</h1>
                         <div className="py-5">
                             <h2 className="font-semibold text-gray-400">Description</h2>
-                            <p className="text-gray-400 text-sm mt-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. </p>
+                            <p className="text-gray-400 text-sm mt-3">{issue.issueDetails?.description}</p>
                         </div>
                         <div className="mt-5">
                             <h1 className="pb-3">Activity</h1>
@@ -44,7 +54,7 @@ const IssueDetail = () => {
                                 <TabsContent value="comments">
                                     <CreateCommentForm issueId={issueId} />
                                     <div className="mt-8 space-y-6">
-                                        {[1, 1, 1].map((item) => <CommentCard key={item} />)}
+                                        {[1].map((item) => <CommentCard key={item} />)}
                                     </div>
                                 </TabsContent>
                                 <TabsContent value="history">
@@ -55,13 +65,13 @@ const IssueDetail = () => {
                     </div>
                 </ScrollArea>
                 <div className="w-full lg:w-[30%] space-y-2">
-                    <Select onValueChange={handleUpdateIssueStatus}>
+                    <Select onValueChange={handleUpdateIssueStatus} defaultValue={issue.status}>
                         <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="To Do" />
+                            <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="pending">To do</SelectItem>
-                            <SelectItem value="in_progress">In progress</SelectItem>
+                            <SelectItem value="pending">To Do</SelectItem>
+                            <SelectItem value="in_progress">In Progress</SelectItem>
                             <SelectItem value="completed">Completed</SelectItem>
                         </SelectContent>
                     </Select>
@@ -87,7 +97,7 @@ const IssueDetail = () => {
                                 <div className="flex gap-10 items-center">
                                     <p className="w-[7rem]">Status</p>
                                     <Badge>
-                                     In Progress   
+                                     {issue.issueDetails.status}
                                     </Badge>
                                 </div>
                                 <div className="flex gap-10 items-center">

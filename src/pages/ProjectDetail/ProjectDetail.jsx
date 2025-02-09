@@ -21,27 +21,15 @@ import { fetchProjectById } from "../../redux/project/action";
 const ProjectDetail = () => {
     const { id } = useParams(); // Extract the project ID from the URL
     const dispatch = useDispatch();
-    const { project, loading, error } = useSelector((state) => state.project);
+    const { project } = useSelector((state) => state.project);
 
     // Safely access nested properties using optional chaining
     const fullName = project?.owner?.fullName;
     const members = project?.team?.users || []; // Default to an empty array if undefined
 
     useEffect(() => {
-        dispatch(fetchProjectById(id));
+        dispatch(fetchProjectById(id))
     }, [dispatch, id]);
-
-    if (loading) {
-        return <div>Loading project details...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (!project) {
-        return <div>Project not found.</div>;
-    }
 
     const handleProjectInvitation = () => {
         // Handle project invitation logic
@@ -62,7 +50,7 @@ const ProjectDetail = () => {
                                 </p>
                                 <div className="flex">
                                     <p className="w-36">Project Lead: </p>
-                                    <p>{fullName || "No project lead"}</p>
+                                    <p>{fullName}</p>
                                 </div>
                                 <div className="flex">
                                     <p className="w-36">Members: </p>

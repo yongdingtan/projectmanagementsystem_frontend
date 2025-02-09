@@ -1,23 +1,38 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
     Dialog,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import IssueCard from './IssueCard'
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import IssueCard from './IssueCard'; // Import IssueCard
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
     CardFooter,
-} from "@/components/ui/card"
-import { PlusIcon } from "@radix-ui/react-icons"
-import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import CreateIssueForm from "./CreateIssueForm"
+} from "@/components/ui/card";
+import { PlusIcon } from "@radix-ui/react-icons";
+import CreateIssueForm from "./CreateIssueForm";
+import { fetchIssues } from "../../redux/issue/action";
 
 const IssueList = ({ title, status }) => {
+    const dispatch = useDispatch();
+    const { issue } = useSelector(store => store);
+    const { id: projectID } = useParams(); // Get projectID from useParams
+
+    // Fetch issues when projectID changes
+    useEffect(() => {
+        dispatch(fetchIssues(projectID));
+    }, [projectID, dispatch]);
+
     return (
         <div>
             <Dialog>
@@ -29,7 +44,13 @@ const IssueList = ({ title, status }) => {
                     </CardHeader>
                     <CardContent className="px-2">
                         <div className='space-y-2'>
-                            {[1,1,1].map((item) => <IssueCard key = {item}/>)}
+                            {issue.issues?.filter((issue => issue.status == status)).map((item) => ( // Map through issues
+                                <IssueCard
+                                    key={item.id}
+                                    item={item}
+                                    projectID={projectID} // Pass projectID as a prop
+                                />
+                            ))}
                         </div>
                     </CardContent>
                     <CardFooter>
@@ -47,11 +68,12 @@ const IssueList = ({ title, status }) => {
                             Create Issue
                         </DialogTitle>
                     </DialogHeader>
-                    <CreateIssueForm />
+                    {/* Pass status directly to CreateIssueForm */}
+                    <CreateIssueForm status={status} projectID={projectID} />
                 </DialogContent>
             </Dialog>
         </div>
-    )
-}
+    );
+};
 
-export default IssueList
+export default IssueList;

@@ -1,19 +1,34 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card"
-import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import UserList from "./UserList"
-import { useNavigate } from "react-router-dom"
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import UserList from "./UserList";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteIssue, fetchIssues } from "../../redux/issue/action"; // Import fetchIssues
 
-const IssueCard = () => {
-    const navigate = useNavigate()
+const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleDeleteIssue = async () => {
+        try {
+            await dispatch(deleteIssue(item.id)); // Dispatch deleteIssue
+            dispatch(fetchIssues(projectID)); // Refetch issues after deletion using projectID
+        } catch (error) {
+            console.error("Failed to delete issue:", error);
+        }
+    };
+
     return (
         <Card className="rounded-md py-1 pb-2">
             <CardHeader className="py-0 pb-1">
                 <div className="flex justify-between items-center">
-                    <CardTitle className="cursor-pointer" onClick={() => navigate("/project/3/issue/10")}>
-                        Issue
+                    <CardTitle className="cursor-pointer" onClick={() => navigate(`/project/${projectID}/issue/${item.id}`)}>
+                        {item.title}
                     </CardTitle>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
@@ -31,7 +46,7 @@ const IssueCard = () => {
                             <DropdownMenuItem>
                                 Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleDeleteIssue}> {/* Use handleDeleteIssue */}
                                 Delete
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -52,16 +67,15 @@ const IssueCard = () => {
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>
-
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <UserList/>
+                            <UserList />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
 
-export default IssueCard
+export default IssueCard;
