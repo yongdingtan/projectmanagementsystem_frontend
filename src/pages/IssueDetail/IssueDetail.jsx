@@ -29,16 +29,15 @@ const IssueDetail = () => {
         dispatch(fetchIssueById(issueId));
     }, [issueId, dispatch]); // Correct dependency array
 
-
     return (
-        <div className="px-20 py-8 text-gray-400">
+        <div className="px-20 py-8 text-black dark:text-white">
             <div className="flex justify-between border p-10 rounded-lg">
                 <ScrollArea className="h-[80vh] w-[60%]">
                     <div>
-                        <h1 className="text-lg font-semibold text-gray-400">{issue.issueDetails?.title}</h1>
+                        <h1 className="text-lg font-semibold">{issue.issueDetails?.title}</h1>
                         <div className="py-5">
-                            <h2 className="font-semibold text-gray-400">Description</h2>
-                            <p className="text-gray-400 text-sm mt-3">{issue.issueDetails?.description}</p>
+                            <h2 className="font-semibold">Description</h2>
+                            <p className="text-sm mt-3">{issue.issueDetails?.description}</p>
                         </div>
                         <div className="mt-5">
                             <h1 className="pb-3">Activity</h1>
@@ -87,32 +86,40 @@ const IssueDetail = () => {
                                                 Z
                                             </AvatarFallback>
                                         </Avatar>
-                                        <p>Test</p>
+                                        <p>{issue.issueDetails?.assigneeId}</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-10 items-center">
+                                    <p className="w-[7rem]">Priority</p>
+                                    <p>{issue.issueDetails?.priority}</p>
+                                </div>
+                                <div className="flex gap-10 items-center">
                                     <p className="w-[7rem]">Labels</p>
-                                    <p>None</p>
+                                    <p>{issue.issueDetails?.tags}</p>
                                 </div>
                                 <div className="flex gap-10 items-center">
                                     <p className="w-[7rem]">Status</p>
                                     <Badge>
-                                     {issue.issueDetails.status}
+                                     {issue.issueDetails?.status}
                                     </Badge>
                                 </div>
                                 <div className="flex gap-10 items-center">
                                     <p className="w-[7rem]">Created</p>
-                                    <p>Date</p>
+                                    <p>{issue.issueDetails?.createdDate}</p>
+                                </div>
+                                <div className="flex gap-10 items-center">
+                                    <p className="w-[7rem]">Due</p>
+                                    <p>{issue.issueDetails?.dueDate}</p>
                                 </div>
                                 <div className="flex gap-10 items-center">
                                     <p className="w-[7rem]">Reporter</p>
                                     <div className="flex items-center gap-3">
                                         <Avatar className="h-8 w-8 text-xs">
                                             <AvatarFallback>
-                                                Z
+                                                {issue.issueDetails?.reporter.fullName.charAt(0)}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <p>Test123</p>
+                                        <p>{issue.issueDetails?.reporter.fullName}</p>
                                     </div>
                                 </div>
                             </div>

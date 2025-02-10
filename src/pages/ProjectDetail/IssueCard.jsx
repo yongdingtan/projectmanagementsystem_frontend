@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons";
@@ -28,7 +27,7 @@ const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
             <CardHeader className="py-0 pb-1">
                 <div className="flex justify-between items-center">
                     <CardTitle className="cursor-pointer" onClick={() => navigate(`/project/${projectID}/issue/${item.id}`)}>
-                        {item.title}
+                        {item?.title}
                     </CardTitle>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
@@ -55,15 +54,15 @@ const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
             </CardHeader>
             <CardContent className="py-0">
                 <div className="flex items-center justify-between">
-                    <p>FBP - {1}</p>
+                    <p>{item?.description}</p>
                     <DropdownMenu className="w-[30rem] border border-red-400">
                         <DropdownMenuTrigger>
                             <Button
                                 size="icon"
                                 className="bg-gray-900 text-white hover:bg-gray-700 hover:text-black rounded-full">
-                                <Avatar>
-                                    <AvatarFallback>
-                                        <PersonIcon />
+                                <Avatar className="cursor-pointer ">
+                                    <AvatarFallback className="text-black dark:text-white">
+                                        {item?.reporter.fullName.charAt(0)}
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>
