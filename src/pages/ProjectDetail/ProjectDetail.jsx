@@ -97,7 +97,7 @@ const ProjectDetail = () => {
                                 <div className="lg:flex md:flex gap-3 justify-between py-5">
                                     <IssueList status="pending" title="TODO List" />
                                     <IssueList status="in_progress" title="In Progress" />
-                                    <IssueList status="done" title="Completed" />
+                                    <IssueList status="completed" title="Completed" />
                                 </div>
                             </section>
                         </div>

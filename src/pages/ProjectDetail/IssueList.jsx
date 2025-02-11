@@ -22,7 +22,6 @@ import {
 import { PlusIcon } from "@radix-ui/react-icons";
 import CreateIssueForm from "./CreateIssueForm";
 import { fetchIssues } from "../../redux/issue/action";
-import { fetchProjectById } from "../../redux/project/action";
 
 const IssueList = ({ title, status }) => {
     const dispatch = useDispatch();

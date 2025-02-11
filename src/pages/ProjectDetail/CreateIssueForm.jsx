@@ -30,12 +30,13 @@ import { Input } from "@/components/ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import { createIssue, fetchIssues } from "../../redux/issue/action";
 import { getTodayDate } from "../../lib/utils";
+import { useState } from "react";
 
 const CreateIssueForm = ({ status, projectID }) => {
   const dispatch = useDispatch();
   const { auth } = useSelector((store) => store);
   const { project } = useSelector((store) => store.project);
-
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false); // State to control the popover
   // Initialize the form with default values
   const form = useForm({
     defaultValues: {
@@ -46,6 +47,7 @@ const CreateIssueForm = ({ status, projectID }) => {
       createdDate: getTodayDate(), // Set today's date as default
       priority: "", // Priority is initially empty
       dueDate: null, // dueDate is initially null
+      assignee: null, // Assignee is initially null
     },
   });
 
@@ -63,7 +65,7 @@ const CreateIssueForm = ({ status, projectID }) => {
           priority: data.priority,
           dueDate: data.dueDate ? format(data.dueDate, "yyyy-MM-dd") : null, // Format dueDate as LocalDate
           reporter: auth?.user,
-          assignee: data.assignee
+          assignee: data.assignee, // Include the selected assignee object
         })
       );
 
@@ -167,18 +169,15 @@ const CreateIssueForm = ({ status, projectID }) => {
                       <DropdownMenuLabel>Assignee</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuRadioGroup
-                        value={field.value ? field.value.id.toString() : ""}
+                        value={field.value?.id} // Use the member's ID for the selected value
                         onValueChange={(value) => {
-                          const selectedMember = project.team?.members.find(
-                            (member) => member.id.toString() === value
-                          );
-                          if (selectedMember) {
-                            form.setValue("assignee", selectedMember, { shouldValidate: true });
-                          }
+                          // Find the selected member object
+                          const selectedMember = project.team?.members.find(member => member.id === value);
+                          field.onChange(selectedMember); // Update the form field value with the member object
                         }}
                       >
                         {project.team?.members.map((member) => (
-                          <DropdownMenuRadioItem key={member.id} value={member.id.toString()}>
+                          <DropdownMenuRadioItem key={member.id} value={member.id}>
                             {member.fullName}
                           </DropdownMenuRadioItem>
                         ))}
@@ -190,14 +189,17 @@ const CreateIssueForm = ({ status, projectID }) => {
               </FormItem>
             )}
           />
-          
+
           {/* Due Date Field */}
           <FormField
             control={form.control}
             name="dueDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <Popover>
+                <Popover
+                  open={isCalendarOpen} // Controlled open state
+                  onOpenChange={setIsCalendarOpen} // Update state when open/close
+                >
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -218,7 +220,10 @@ const CreateIssueForm = ({ status, projectID }) => {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        field.onChange(date); // Update the form field value
+                        setIsCalendarOpen(false); // Close the popover
+                      }}
                       disabled={(date) =>
                         date < new Date() // Disable past dates
                       }

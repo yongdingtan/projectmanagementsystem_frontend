@@ -68,7 +68,7 @@ const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <UserList />
+                            <UserList issueDetails = {item} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
