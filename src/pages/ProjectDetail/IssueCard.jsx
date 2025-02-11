@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";

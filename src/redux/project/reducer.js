@@ -1,4 +1,4 @@
-import { ACCEPT_INVITATION_REQUEST, CREATE_PROJECT_REQUEST, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, FETCH_PROJECT_BY_ID_REQUEST, FETCH_PROJECT_BY_ID_SUCCESS, FETCH_PROJECT_REQUEST, FETCH_PROJECT_SUCCESS, INVITE_TO_PROJECT_REQUEST, SEARCH_PROJECT_SUCCESS } from "./actionType";
+import { ACCEPT_INVITATION_REQUEST, CREATE_PROJECT_REQUEST, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, FETCH_PROJECT_BY_ID_REQUEST, FETCH_PROJECT_BY_ID_SUCCESS, FETCH_PROJECT_REQUEST, FETCH_PROJECT_SUCCESS, FETCH_TEAM_BY_ID_REQUEST, FETCH_TEAM_BY_ID_SUCCESS, INVITE_TO_PROJECT_REQUEST, SEARCH_PROJECT_SUCCESS } from "./actionType";
 
 const initialState = {
     project: [],
@@ -11,6 +11,7 @@ const initialState = {
 export const projectReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_PROJECT_REQUEST:
+        case FETCH_TEAM_BY_ID_REQUEST:
         case CREATE_PROJECT_REQUEST:
         case DELETE_PROJECT_REQUEST:
         case FETCH_PROJECT_BY_ID_REQUEST:
@@ -43,6 +44,7 @@ export const projectReducer = (state = initialState, action) => {
                 error:null
             }
         case FETCH_PROJECT_BY_ID_SUCCESS:
+        case FETCH_TEAM_BY_ID_SUCCESS:
             return {
                 ...state,
                 loading:false,

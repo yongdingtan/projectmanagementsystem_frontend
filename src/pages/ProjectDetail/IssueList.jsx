@@ -22,12 +22,12 @@ import {
 import { PlusIcon } from "@radix-ui/react-icons";
 import CreateIssueForm from "./CreateIssueForm";
 import { fetchIssues } from "../../redux/issue/action";
+import { fetchProjectById } from "../../redux/project/action";
 
 const IssueList = ({ title, status }) => {
     const dispatch = useDispatch();
     const { issue } = useSelector(store => store);
-    const { id: projectID } = useParams(); // Get projectID from useParams
-
+    const { id: projectID } = useParams();
     // Fetch issues when projectID changes
     useEffect(() => {
         dispatch(fetchIssues(projectID));

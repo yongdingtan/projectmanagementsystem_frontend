@@ -34,6 +34,7 @@ import { getTodayDate } from "../../lib/utils";
 const CreateIssueForm = ({ status, projectID }) => {
   const dispatch = useDispatch();
   const { auth } = useSelector((store) => store);
+  const { project } = useSelector((store) => store.project);
 
   // Initialize the form with default values
   const form = useForm({
@@ -62,6 +63,7 @@ const CreateIssueForm = ({ status, projectID }) => {
           priority: data.priority,
           dueDate: data.dueDate ? format(data.dueDate, "yyyy-MM-dd") : null, // Format dueDate as LocalDate
           reporter: auth?.user,
+          assignee: data.assignee
         })
       );
 
@@ -148,6 +150,47 @@ const CreateIssueForm = ({ status, projectID }) => {
             )}
           />
 
+          {/* Assignee Field */}
+          <FormField
+            control={form.control}
+            name="assignee"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start">
+                        {field.value ? field.value.fullName : "Select assignee"}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuLabel>Assignee</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuRadioGroup
+                        value={field.value ? field.value.id.toString() : ""}
+                        onValueChange={(value) => {
+                          const selectedMember = project.team?.members.find(
+                            (member) => member.id.toString() === value
+                          );
+                          if (selectedMember) {
+                            form.setValue("assignee", selectedMember, { shouldValidate: true });
+                          }
+                        }}
+                      >
+                        {project.team?.members.map((member) => (
+                          <DropdownMenuRadioItem key={member.id} value={member.id.toString()}>
+                            {member.fullName}
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
           {/* Due Date Field */}
           <FormField
             control={form.control}
@@ -159,9 +202,8 @@ const CreateIssueForm = ({ status, projectID }) => {
                     <FormControl>
                       <Button
                         variant={"outline"}
-                        className={`w-full justify-start text-left font-normal ${
-                          !field.value ? "text-muted-foreground" : ""
-                        }`}
+                        className={`w-full justify-start text-left font-normal ${!field.value ? "text-muted-foreground" : ""
+                          }`}
                       >
                         {field.value ? (
                           format(field.value, "PPP") // Format the date as "Month Day, Year"

@@ -18,7 +18,7 @@ import { useEffect } from "react"
 import { fetchIssueById, updateIssueStatus } from "../../redux/issue/action"
 
 const IssueDetail = () => {
-    const { projectId, issueId } = useParams()
+    const { issueId } = useParams()
     const dispatch = useDispatch()
     const { issue } = useSelector(store => store)
     const handleUpdateIssueStatus = async (status) => {
@@ -83,10 +83,10 @@ const IssueDetail = () => {
                                     <div className="flex items-center gap-3">
                                         <Avatar className="h-8 w-8 text-xs">
                                             <AvatarFallback>
-                                                Z
+                                            {issue.issueDetails?.assignee?.fullName.charAt(0)}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <p>{issue.issueDetails?.assigneeId}</p>
+                                        <p>{issue.issueDetails?.assignee?.fullName}</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-10 items-center">
