@@ -31,14 +31,25 @@ export const deleteComment = (commentId) => {
 
 export const fetchComments = (issueId) => {
     return async (dispatch) => {
-        dispatch({type: actionType.FETCH_COMMENTS_REQUEST})
+        dispatch({ type: actionType.FETCH_COMMENTS_REQUEST }); // Dispatch request action
+
         try {
-            const response = await api.get(`/api/comments/${issueId}`)
-            console.log("Fetched comments: ", response.data)
-            dispatch({type: actionType.FETCH_COMMENTS_SUCCESS, comments: response.data})
+            const response = await api.get(`/api/comments/${issueId}`); // Fetch comments for the specific issue
+            console.log("Fetched comments: ", response.data);
+
+            // Dispatch success action with the fetched comments
+            dispatch({
+                type: actionType.FETCH_COMMENTS_SUCCESS,
+                payload: response.data, // Use `payload` instead of `comments` for consistency
+            });
         } catch (error) {
-            console.log(error)
-            dispatch({type: actionType.FETCH_COMMENTS_FAILURE, error: error.message})
+            console.log(error);
+
+            // Dispatch failure action with the error message
+            dispatch({
+                type: actionType.FETCH_COMMENTS_FAILURE,
+                payload: error.message, // Use `payload` instead of `error` for consistency
+            });
         }
-    }
-}
+    };
+};

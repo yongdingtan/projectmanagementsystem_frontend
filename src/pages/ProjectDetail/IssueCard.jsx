@@ -62,7 +62,7 @@ const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
                                 className="bg-gray-900 text-white hover:bg-gray-700 hover:text-black rounded-full">
                                 <Avatar className="cursor-pointer ">
                                     <AvatarFallback className="text-black dark:text-white">
-                                        {item?.reporter.fullName.charAt(0)}
+                                        {item?.reporter.fullName[0]}
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>

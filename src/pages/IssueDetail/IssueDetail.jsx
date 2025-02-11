@@ -1,33 +1,36 @@
-/* eslint-disable no-unused-vars */
-import { useParams } from "react-router-dom"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import CreateCommentForm from "./CreateCommentForm"
-import CommentCard from "./CommentCard"
+import { useParams } from "react-router-dom";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CreateCommentForm from "./CreateCommentForm";
+import CommentCard from "./CommentCard";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import { fetchIssueById, updateIssueStatus } from "../../redux/issue/action"
+} from "@/components/ui/select";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchIssueById, updateIssueStatus } from "../../redux/issue/action";
+import { fetchComments } from "../../redux/comment/action";
 
 const IssueDetail = () => {
-    const { issueId } = useParams()
-    const dispatch = useDispatch()
-    const { issue } = useSelector(store => store)
+    const { issueId } = useParams();
+    const dispatch = useDispatch();
+    const { issue, comment } = useSelector((store) => store);
+
     const handleUpdateIssueStatus = async (status) => {
-        await dispatch(updateIssueStatus(issueId, status))
+        await dispatch(updateIssueStatus(issueId, status));
         dispatch(fetchIssueById(issueId));
-    }
+    };
+
     useEffect(() => {
         dispatch(fetchIssueById(issueId));
-    }, [issueId, dispatch]); // Correct dependency array
+        dispatch(fetchComments(issueId)); // Fetch comments for the specific issue
+    }, [issueId, dispatch]);
 
     return (
         <div className="px-20 py-8 text-black dark:text-white">
@@ -47,18 +50,20 @@ const IssueDetail = () => {
                                     <TabsTrigger value="comments">Comments</TabsTrigger>
                                     <TabsTrigger value="history">History</TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="all">
-                                    test
-                                </TabsContent>
+                                <TabsContent value="all">test</TabsContent>
                                 <TabsContent value="comments">
                                     <CreateCommentForm issueId={issueId} />
                                     <div className="mt-8 space-y-6">
-                                        {[1].map((item) => <CommentCard key={item} />)}
+                                        {comment.comments?.map((item, index) => (
+                                            <CommentCard
+                                                item={item}
+                                                issueId={issueId}
+                                                key={item?.id || index} // Use item.id if defined, otherwise fallback to index
+                                            />
+                                        ))}
                                     </div>
                                 </TabsContent>
-                                <TabsContent value="history">
-                                    dsa
-                                </TabsContent>
+                                <TabsContent value="history">dsa</TabsContent>
                             </Tabs>
                         </div>
                     </div>
@@ -83,7 +88,7 @@ const IssueDetail = () => {
                                     <div className="flex items-center gap-3">
                                         <Avatar className="h-8 w-8 text-xs">
                                             <AvatarFallback>
-                                            {issue.issueDetails?.assignee?.fullName.charAt(0)}
+                                                {issue.issueDetails?.assignee?.fullName[0]}
                                             </AvatarFallback>
                                         </Avatar>
                                         <p>{issue.issueDetails?.assignee?.fullName}</p>
@@ -100,7 +105,7 @@ const IssueDetail = () => {
                                 <div className="flex gap-10 items-center">
                                     <p className="w-[7rem]">Status</p>
                                     <Badge>
-                                     {issue.issueDetails?.status}
+                                        {issue.issueDetails?.status}
                                     </Badge>
                                 </div>
                                 <div className="flex gap-10 items-center">
@@ -116,7 +121,7 @@ const IssueDetail = () => {
                                     <div className="flex items-center gap-3">
                                         <Avatar className="h-8 w-8 text-xs">
                                             <AvatarFallback>
-                                                {issue.issueDetails?.reporter.fullName.charAt(0)}
+                                                {issue.issueDetails?.reporter.fullName[0]}
                                             </AvatarFallback>
                                         </Avatar>
                                         <p>{issue.issueDetails?.reporter.fullName}</p>
@@ -128,7 +133,7 @@ const IssueDetail = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default IssueDetail
+export default IssueDetail;

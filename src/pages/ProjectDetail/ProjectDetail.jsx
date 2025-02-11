@@ -58,7 +58,7 @@ const ProjectDetail = () => {
                                         {members.map((member) => (
                                             <Avatar className="cursor-pointer" key={member.id}>
                                                 <AvatarFallback>
-                                                    {member.fullName?.charAt(0) || "U"}
+                                                    {member.fullName[0] || "U"}
                                                 </AvatarFallback>
                                             </Avatar>
                                         ))}
