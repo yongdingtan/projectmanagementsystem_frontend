@@ -25,7 +25,7 @@ import { fetchIssues } from "../../redux/issue/action";
 
 const IssueList = ({ title, status }) => {
     const dispatch = useDispatch();
-    const { issue } = useSelector(store => store);
+    const issue = useSelector(state => state.issue);
     const { id: projectID } = useParams();
     // Fetch issues when projectID changes
     useEffect(() => {

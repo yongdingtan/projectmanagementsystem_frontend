@@ -11,10 +11,11 @@ import { useEffect } from 'react'
 import { getUser } from './redux/auth/action'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProjects } from './redux/project/action'
+import UpgradeResult from './pages/Subscription/UpgradeResult'
 
 function App() {
   const dispatch = useDispatch()
-  const {auth} = useSelector(store => store)
+  const auth = useSelector(state => state.auth)
 
   useEffect(() => {
     dispatch(getUser()),
@@ -32,6 +33,7 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/project/:projectId/issue/:issueId" element={<IssueDetail />} />
         <Route path="/upgrade_plan" element={<Subscription />} />
+        <Route path="/upgrade/result" element={<UpgradeResult />} />
        </Routes>
        </div>:<Auth/>
      }

@@ -28,7 +28,7 @@ const ProjectDetail = () => {
     const members = project?.team?.users || []; // Default to an empty array if undefined
 
     useEffect(() => {
-        dispatch(fetchProjectById(id))
+        dispatch(fetchProjectById(id));
     }, [dispatch, id]);
 
     const handleProjectInvitation = () => {
@@ -64,22 +64,23 @@ const ProjectDetail = () => {
                                         ))}
                                     </div>
                                     <Dialog>
-                                        <DialogTrigger>
-                                            <DialogClose>
-                                                <Button
-                                                    className="ml-3"
-                                                    size="sm"
-                                                    variant="outline"
-                                                    onClick={handleProjectInvitation}
-                                                >
-                                                    <span>Invite</span>
-                                                    <PlusIcon className="w-3 h-3" />
-                                                </Button>
-                                            </DialogClose>
+                                        <DialogTrigger asChild>
+                                            <Button
+                                                className="ml-3"
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={handleProjectInvitation}
+                                            >
+                                                <span>Invite</span>
+                                                <PlusIcon className="w-3 h-3" />
+                                            </Button>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>Invite User</DialogHeader>
                                             <InviteUserForm />
+                                            <DialogClose asChild>
+                                                <Button variant="outline">Close</Button>
+                                            </DialogClose>
                                         </DialogContent>
                                     </Dialog>
                                 </div>
