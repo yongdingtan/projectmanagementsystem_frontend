@@ -1,4 +1,4 @@
-/* eslint-disable no-constant-condition */
+/* eslint-disable react-hooks/exhaustive-deps */
 import './App.css'
 import Home from "./pages/Home/Home"
 import Navbar from './pages/Navbar/Navbar'

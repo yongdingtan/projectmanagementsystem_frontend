@@ -15,10 +15,13 @@ const UpgradeResult = () => {
     const queryParams = new URLSearchParams(location.search)
     const paymentId = queryParams.get("payment_id")
     const planType = queryParams.get("planType")
+    const jwt = localStorage.getItem("jwt");
+
+    console.log(planType)
 
     useEffect(() => {
-      dispatch(upgradeSubscription({planType}))
-      dispatch(getUserSubscription())
+      dispatch(getUserSubscription(jwt))
+      dispatch(upgradeSubscription({paymentId, planType, jwt}))
     }, [])
 
   return (
@@ -32,13 +35,10 @@ const UpgradeResult = () => {
         </div>
         <div className='space-y-3'>
             <p className='text-green-500'>
-                Start Date:
+                Start Date: {subscription?.subscriptionStartDate}
             </p>
             <p className='text-red-500'>
-                End Date:
-            </p>
-            <p className=''>
-                Start Date:
+                End Date: {subscription?.subscriptionEndDate}
             </p>
         </div>
         <Button onClick={()=> navigate("/")}>Home</Button>

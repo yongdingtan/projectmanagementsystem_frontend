@@ -1,7 +1,7 @@
 import * as actionType from "./actionType"
 
 const initialState = {
-    userSubscription: null,
+    subscription: null,
     loading: false,
     error: null
 }
@@ -18,14 +18,14 @@ export const subscriptiontReducer = (state=initialState, action) => {
         case actionType.GET_USER_SUBSCRIPTION_SUCCESS:
             return {
                 ...state,
-                userSubscription: action.payload,
+                subscription: action.payload,
                 loading: false,
                 error: null
             }
         case actionType.UPGRADE_SUBSCRIPTION_SUCCESS:
             return {
                 ...state,
-                userSubscription: action.payload,
+                subscription: action.payload,
                 loading: false,
                 error: null
             }
