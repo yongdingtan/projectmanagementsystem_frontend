@@ -33,7 +33,7 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/project/:projectId/issue/:issueId" element={<IssueDetail />} />
         <Route path="/upgrade_plan" element={<Subscription />} />
-        <Route path="/upgrade/result" element={<UpgradeResult />} />
+        <Route path="/upgrade_plan/success" element={<UpgradeResult />} />
        </Routes>
        </div>:<Auth/>
      }
