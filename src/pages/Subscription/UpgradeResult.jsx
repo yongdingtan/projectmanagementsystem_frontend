@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { getUserSubscription, upgradeSubscription } from '../../redux/subscription/action'
+import { getUserSubscription } from '../../redux/subscription/action'
 
 const UpgradeResult = () => {
     const navigate = useNavigate()
@@ -13,15 +13,10 @@ const UpgradeResult = () => {
 
     const { subscription} = useSelector(state => state.subscription)
     const queryParams = new URLSearchParams(location.search)
-    const paymentId = queryParams.get("payment_id")
-    const planType = queryParams.get("planType")
     const jwt = localStorage.getItem("jwt");
-
-    console.log(planType)
 
     useEffect(() => {
       dispatch(getUserSubscription(jwt))
-      dispatch(upgradeSubscription({paymentId, planType, jwt}))
     }, [])
 
   return (
@@ -39,6 +34,9 @@ const UpgradeResult = () => {
             </p>
             <p className='text-red-500'>
                 End Date: {subscription?.subscriptionEndDate}
+            </p>
+            <p className='text-white-500'>
+                Plan Type: {subscription?.planType}
             </p>
         </div>
         <Button onClick={()=> navigate("/")}>Home</Button>

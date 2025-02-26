@@ -6,7 +6,6 @@ export const getUserSubscription = (jwt) => {
         dispatch({type: actionType.GET_USER_SUBSCRIPTION_REQUEST})
         try {
             const response = await api.get("/api/subscription/user", {headers: {"Authorization":`Bearer ${jwt}`}})
-            console.log("User's subscription: ", response.data)
             dispatch({type: actionType.GET_USER_SUBSCRIPTION_SUCCESS, payload: response.data})
         } catch (error) {
             console.log(error)
@@ -20,7 +19,6 @@ export const upgradeSubscription = ({planType}) => {
         dispatch({type: actionType.UPGRADE_SUBSCRIPTION_REQUEST})
         try {
             const response = await api.patch("/api/subscription/upgrade", null, {params: {planType: planType}})
-            console.log("Upgraded subscription: ", response.data)
             dispatch({type: actionType.UPGRADE_SUBSCRIPTION_SUCCESS, payload: response.data})
         } catch (error) {
             console.log(error)
