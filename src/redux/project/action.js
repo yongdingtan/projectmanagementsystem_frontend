@@ -74,19 +74,28 @@ export const deleteProject = (projectId) => async (dispatch) => {
     }
 }
 
-export const inviteToProject = ({ email, projectId }) => async (dispatch) => {
+export const inviteToProject = ({ email, projectId, jwt }) => async (dispatch, getState) => {
+    dispatch({ type: INVITE_TO_PROJECT_REQUEST });
 
-    dispatch({ type: INVITE_TO_PROJECT_REQUEST })
     try {
-        const { data } = await api.post("/api/project/invite" + { email, projectId })
-        console.log("Invitation sent: ", data)
-        dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data })
-    } catch (error) {
-        console.log(error)
-        dispatch({ type: INVITE_TO_PROJECT_FAILURE, payload: error.message })
+        console.log("Token: ", jwt);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            },
+        };
 
+        const { data } = await api.post("/api/project/invite", { email, projectId }, config);
+        console.log("Invitation sent: ", data);
+        dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data });
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: INVITE_TO_PROJECT_FAILURE,
+            payload: error.response ? error.response.data.message : "Failed to send invitation",
+        });
     }
-}
+};
 
 export const acceptInvitationToProject = ({ invitationToken, navigate }) => async (dispatch) => {
 

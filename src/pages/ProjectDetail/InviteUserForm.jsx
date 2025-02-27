@@ -3,14 +3,20 @@ import { Form, FormField, FormItem, FormControl, FormMessage } from "@/component
 import { Button } from "@/components/ui/button"
 import { DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { useDispatch } from "react-redux"
+import { inviteToProject } from "../../redux/project/action"
+import { useParams } from "react-router-dom"
 
 const InviteUserForm = () => {
+    const dispatch = useDispatch()
+    const { id } = useParams()
+    const jwt = localStorage.getItem("jwt");
     const form = useForm({
         defaultValues: {
-            email: ''
-        }
+        },
     })
     const onSubmit = (data) => {
+        dispatch(inviteToProject({email: data.email, projectId: id, jwt}))
         console.log("Email: ", data)
     }
   return (

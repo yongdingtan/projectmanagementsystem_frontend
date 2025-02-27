@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
 import { register } from "../../redux/auth/action";
+import Popup from "./Popup"; // Import the Popup component
+import { useNavigate } from "react-router-dom";
 
 // Reusable FormField component to reduce repetition
 const CustomFormField = ({ name, placeholder, type = "text", control }) => (
@@ -29,6 +33,8 @@ const CustomFormField = ({ name, placeholder, type = "text", control }) => (
 
 const SignUp = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
   const form = useForm({
     defaultValues: {
       email: "",
@@ -37,9 +43,14 @@ const SignUp = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    dispatch(register(data));
+  const onSubmit = async (data) => {
+    await dispatch(register(data));
     console.log("Form Data: ", data);
+    setShowPopup(true); // Show the popup after successful signup
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -69,6 +80,8 @@ const SignUp = () => {
           </Button>
         </form>
       </Form>
+
+      {showPopup && <Popup message="Register Successful!" onClose={closePopup} />}
     </div>
   );
 };
