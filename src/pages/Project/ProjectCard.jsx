@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
