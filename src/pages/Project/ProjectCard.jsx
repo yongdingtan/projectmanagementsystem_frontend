@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card } from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { DotFilledIcon, DotsVerticalIcon } from '@radix-ui/react-icons';
 import {
   DropdownMenu,
