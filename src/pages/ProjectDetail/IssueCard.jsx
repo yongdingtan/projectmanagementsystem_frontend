@@ -7,20 +7,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import UserList from "./UserList";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteIssue, fetchIssues } from "../../redux/issue/action"; // Import fetchIssues
+import { deleteIssue, fetchIssues, updateIssueStatus } from "../../redux/issue/action"; // Import fetchIssues
 
 const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    const handleDeleteIssue = async () => {
-        try {
-            await dispatch(deleteIssue(item.id)); // Dispatch deleteIssue
-            dispatch(fetchIssues(projectID)); // Refetch issues after deletion using projectID
-        } catch (error) {
-            console.error("Failed to delete issue:", error);
-        }
-    };
 
     return (
         <Card className="rounded-md py-1 pb-2">
@@ -36,16 +27,30 @@ const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={async () => {
+                                    await dispatch(updateIssueStatus(item.id, "in_progress"));
+                                    dispatch(fetchIssues(projectID)); // Refresh issues
+                                }}
+                            >
                                 In progress
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                Done
+                            <DropdownMenuItem
+                                onClick={async () => {
+                                    await dispatch(updateIssueStatus(item.id, "completed"));
+                                    dispatch(fetchIssues(projectID)); // Refresh issues
+                                }}
+                            >
+                                Completed
                             </DropdownMenuItem>
+
                             <DropdownMenuItem>
                                 Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={handleDeleteIssue}> {/* Use handleDeleteIssue */}
+                            <DropdownMenuItem onClick={async () => {
+                                await dispatch(deleteIssue(item.id)); // Dispatch deleteIssue
+                                dispatch(fetchIssues(projectID));
+                            }}>
                                 Delete
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -68,7 +73,7 @@ const IssueCard = ({ item, projectID }) => { // Add projectID as a prop
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <UserList issueDetails = {item} />
+                            <UserList issueDetails={item} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
