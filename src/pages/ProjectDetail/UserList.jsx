@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from '@/components/ui/Avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useDispatch, useSelector } from 'react-redux'
 import { assignUserToIssue } from '../../redux/issue/action'
 
