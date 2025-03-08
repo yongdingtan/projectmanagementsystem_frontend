@@ -14,7 +14,7 @@ const Auth = () => {
                     {active?<SignUp/>:<Login/>}
                     <div>
                         <span>{active? "Already have account?":"Don't have account?"}</span>
-                        <Button variant="ghost" onClick={() => setActive(!active)}>{active? "Login":"Sign Up"}</Button>
+                        <Button variant="ghost" onClick={() => setActive(!active)}>{active? "Login":"Register"}</Button>
                     </div>
                 </div>
             </div>
