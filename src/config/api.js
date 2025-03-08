@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// Update this to your Render backend URL
-export const API_BASE_URL = "https://projectmanagementsystem-frontend.onrender.com";
+export const API_BASE_URL = "https://projectmanagementsystem-latest.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
