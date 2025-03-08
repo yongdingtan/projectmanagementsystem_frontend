@@ -3,21 +3,31 @@ import api from "../../config/api"
 import { ACCEPT_INVITATION_FAILURE, ACCEPT_INVITATION_REQUEST, ACCEPT_INVITATION_SUCCESS, CREATE_PROJECT_FAILURE, CREATE_PROJECT_REQUEST, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, FETCH_PROJECT_BY_ID_FAILURE, FETCH_PROJECT_BY_ID_REQUEST, FETCH_PROJECT_BY_ID_SUCCESS, FETCH_PROJECT_FAILURE, FETCH_PROJECT_REQUEST, FETCH_PROJECT_SUCCESS, FETCH_TEAM_BY_ID_FAILURE, FETCH_TEAM_BY_ID_REQUEST, FETCH_TEAM_BY_ID_SUCCESS, INVITE_TO_PROJECT_FAILURE, INVITE_TO_PROJECT_REQUEST, INVITE_TO_PROJECT_SUCCESS, SEARCH_PROJECT_FAILURE, SEARCH_PROJECT_REQUEST, SEARCH_PROJECT_SUCCESS } from "./actionType"
 
 export const fetchProjects = ({ category, tag }) => async (dispatch) => {
-
     dispatch({ type: FETCH_PROJECT_REQUEST });
+
     try {
+        const token = localStorage.getItem("jwt"); // Get the token
+        console.log("JWT Token in fetchProjects:", token); // Debugging
+
         const params = {}; // Always include the tag
         if (category && category !== "all") {
-            params.category = category; // Include category only if it's not "all"
+            params.category = category;
         }
         if (tag && tag !== "all") {
-            params.tag = tag; // Include tag only if it's not "all"
+            params.tag = tag;
         }
-        const { data } = await api.get("/api/project", { params });
-        console.log("All projects: ", data);
-        dispatch({ type: FETCH_PROJECT_SUCCESS, payload: data }); // Use payload instead of project for consistency
+
+        const { data } = await api.get("/api/project", {
+            params,
+            headers: { // Explicitly include Authorization header
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        console.log("All projects:", data);
+        dispatch({ type: FETCH_PROJECT_SUCCESS, payload: data });
     } catch (error) {
-        console.log(error);
+        console.error("Error fetching projects:", error.response ? error.response.data : error.message);
         dispatch({ type: FETCH_PROJECT_FAILURE, payload: error.message });
     }
 };
