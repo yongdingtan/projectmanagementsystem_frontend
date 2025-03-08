@@ -18,25 +18,26 @@ function App() {
   const auth = useSelector(state => state.auth)
 
   useEffect(() => {
-    dispatch(getUser()),
+    dispatch(getUser())
     dispatch(fetchProjects({}))
-  },[auth.jwt])
+  }, [auth.jwt])
 
   return (
     <>
-
-     {
-      auth.user?   <div>
-      <Navbar/>
-       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:id" element={<ProjectDetail />} />
-        <Route path="/project/:projectId/issue/:issueId" element={<IssueDetail />} />
-        <Route path="/upgrade_plan" element={<Subscription />} />
-        <Route path="/upgrade_plan/success" element={<UpgradeResult />} />
-       </Routes>
-       </div>:<Auth/>
-     }
+      {
+        auth.user ? (
+          <div>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/project/:id" element={<ProjectDetail />} />
+              <Route path="/project/:projectId/issue/:issueId" element={<IssueDetail />} />
+              <Route path="/upgrade_plan" element={<Subscription />} />
+              <Route path="/upgrade_plan/success" element={<UpgradeResult />} />
+            </Routes>
+          </div>
+        ) : <Auth />
+      }
     </>
   )
 }
