@@ -18,9 +18,12 @@ function App() {
   const auth = useSelector(state => state.auth)
 
   useEffect(() => {
-    dispatch(getUser())
-    dispatch(fetchProjects({}))
-  }, [auth.jwt])
+    if (!auth.user) {
+      dispatch(getUser());
+    }
+    dispatch(fetchProjects({}));
+  }, [auth.jwt]);
+  
 
   return (
     <>
