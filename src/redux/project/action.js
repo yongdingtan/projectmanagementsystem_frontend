@@ -32,6 +32,10 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
 
     try {
         const token = localStorage.getItem("jwt"); // Get the token
+        if (!token) {
+            console.error("No JWT token found");
+            return; // Stop the request if the token is missing
+          }
 
         const params = {};
         if (category && category !== "all") {
@@ -50,6 +54,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
         console.log("projects fetched: ", data)
         dispatch({ type: FETCH_PROJECT_SUCCESS, payload: data });
     } catch (error) {
+        console.log("error: ", error)
         dispatch({ type: FETCH_PROJECT_FAILURE, payload: error.message });
     }
 };
