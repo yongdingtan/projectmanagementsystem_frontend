@@ -31,12 +31,6 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
     dispatch({ type: FETCH_PROJECT_REQUEST });
 
     try {
-        const token = localStorage.getItem("jwt"); // Get the token
-        if (!token) {
-            console.error("No JWT token found");
-            return; // Stop the request if the token is missing
-          }
-
         const params = {};
         if (category && category !== "all") {
             params.category = category;
@@ -46,11 +40,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
         }
 
         const { data } = await api.get("/api/project", {
-            params,
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
+            params});
         console.log("projects fetched: ", data)
         dispatch({ type: FETCH_PROJECT_SUCCESS, payload: data });
     } catch (error) {
