@@ -102,7 +102,7 @@ const ProjectList = () => {
                     <div className="space-y-5 min-h-[74vh]">
                         {project && project.length > 0 ? (
                             project
-                                .filter((item) => item.name?.toLowerCase().includes(keyword.toLowerCase())) // Filtering logic
+                                .filter((item) => item?.name?.toLowerCase().includes(keyword.toLowerCase())) // Filtering logic
                                 .map((item) => (
                                     <ProjectCard key={item.id} item={item} />
                                 ))

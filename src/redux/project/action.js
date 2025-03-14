@@ -146,12 +146,27 @@ export const acceptInvitationToProject = ({ invitationToken, navigate }) => asyn
     dispatch({ type: ACCEPT_INVITATION_REQUEST });
 
     try {
-        const { data } = await api.get(`/api/project/accept_invitation`, {
-            params: { token: invitationToken }
+        const { data, status } = await api.get(`/api/project/accept_invitation`, {
+            params: { token: invitationToken },
         });
 
-        navigate(`/project/${data.projectId}`);
-        dispatch({ type: ACCEPT_INVITATION_SUCCESS, payload: data });
+        if (status === 401) {
+            // Handle unauthenticated user (redirect to login)
+            const redirectUrl = data.redirect;
+            navigate(redirectUrl);  // Redirect to login page
+            return;  // Exit the function
+        }
+
+        // Ensure projectId is retrieved correctly
+        const projectId = data.projectId || data.project?.id;
+
+        if (projectId) {
+            navigate(`/project/${projectId}`);  // Redirect to project page
+            dispatch({ type: ACCEPT_INVITATION_SUCCESS, payload: data });
+        } else {
+            throw new Error("Invalid project data received");
+        }
+
     } catch (error) {
         dispatch({ type: ACCEPT_INVITATION_FAILURE, payload: error.message });
     }

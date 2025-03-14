@@ -50,7 +50,7 @@ const IssueDetail = () => {
                                     <TabsTrigger value="comments">Comments</TabsTrigger>
                                     <TabsTrigger value="history">History</TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="all">test</TabsContent>
+                                <TabsContent value="all">WIP</TabsContent>
                                 <TabsContent value="comments">
                                     <CreateCommentForm issueId={issueId} />
                                     <div className="mt-8 space-y-6">
@@ -63,7 +63,7 @@ const IssueDetail = () => {
                                         ))}
                                     </div>
                                 </TabsContent>
-                                <TabsContent value="history">dsa</TabsContent>
+                                <TabsContent value="history">WIP</TabsContent>
                             </Tabs>
                         </div>
                     </div>

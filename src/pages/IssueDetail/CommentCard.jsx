@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -6,13 +7,23 @@ import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { getUserById } from "../../redux/auth/action";
 import { deleteComment, fetchComments } from "../../redux/comment/action";
+import { format } from "date-fns";
 
 const CommentCard = ({ item, issueId }) => {
+
+    function formatDateTime(dateString) {
+        if (!dateString) return '';
+
+        const date = new Date(dateString);
+
+        return format(date, "do MMMM yyyy h:mma"); // Example: 14th March 2025 8:13pm
+    }
+
     const dispatch = useDispatch();
     const [user, setUser] = useState(null); // State to store user data
     const [loading, setLoading] = useState(true); // State to track loading status
     const [error, setError] = useState(null); // State to track errors
-
+    console.log("item", item)
     // Fetch user data when the component mounts or when item.user.id changes
     useEffect(() => {
         const fetchUser = async () => {
@@ -55,12 +66,12 @@ const CommentCard = ({ item, issueId }) => {
             <div className="flex items-center gap-4">
                 <Avatar>
                     <AvatarFallback>
-                        {user?.fullName?.charAt(0) || "U"} {/* Display the first letter of the user's name */}
+                        {item.user?.fullName[0]} {/* Display the first letter of the user's name */}
                     </AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
-                    <p>{item.user?.fullName}</p> {/* Display the user's full name */}
-                    <p>{item?.content}</p> {/* Display the comment content */}
+                    <p>{item.user?.fullName} {formatDateTime(item?.createdDateTime)}</p>
+                    <p>{item?.content}</p>
                 </div>
             </div>
             <Button

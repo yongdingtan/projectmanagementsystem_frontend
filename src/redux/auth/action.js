@@ -43,9 +43,6 @@ export const getUser = () => async (dispatch) => {
                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`
             }
         });
-
-        console.log("response: ", response);
-
         const data = response.data; // Access the data from the response object
 
         if (data && typeof data === "object") {

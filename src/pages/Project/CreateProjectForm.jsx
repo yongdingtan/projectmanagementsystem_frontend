@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select"
 import { Cross1Icon } from "@radix-ui/react-icons"
 import { useDispatch } from "react-redux"
-import { createProject } from "../../redux/project/action";
+import { createProject, fetchProjects } from "../../redux/project/action";
 import { tags } from "../ProjectList/tags"
 
 const CreateProjectForm = () => {
@@ -36,9 +36,10 @@ const CreateProjectForm = () => {
   }
 
 
-  const onSubmit = (data) => {
-    dispatch(createProject(data))
+  const onSubmit = async (data) => {
+    await dispatch(createProject(data))
     console.log("Create project data", data)
+    await dispatch(fetchProjects({}))
   }
 
   return (

@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteProject } from '../../redux/project/action';
+import { deleteProject, fetchProjects } from '../../redux/project/action';
 
 const ProjectCard = ({ item }) => {
   const dispatch = useDispatch();
@@ -40,7 +40,10 @@ const ProjectCard = ({ item }) => {
                   <DropdownMenuItem>
                     Update
                   </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => dispatch(deleteProject(item.id))}>
+                  <DropdownMenuItem onSelect={async () => {
+                    await dispatch(deleteProject(item.id));
+                    await dispatch(fetchProjects({}));
+                  }}>
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>

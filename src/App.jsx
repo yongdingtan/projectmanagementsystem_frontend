@@ -12,6 +12,7 @@ import { getUser } from './redux/auth/action'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProjects } from './redux/project/action'
 import UpgradeResult from './pages/Subscription/UpgradeResult'
+import AcceptInvitation from './pages/Invitation/AcceptInvitation'
 
 function App() {
   const dispatch = useDispatch()
@@ -37,6 +38,11 @@ function App() {
               <Route path="/project/:projectId/issue/:issueId" element={<IssueDetail />} />
               <Route path="/upgrade_plan" element={<Subscription />} />
               <Route path="/upgrade_plan/success" element={<UpgradeResult />} />
+              <Route path="/api/project/accept_invitation" element={<AcceptInvitation />} />
+              <Route path="/invitation-failed" element={<p>Invitation Failed</p>} />
+              <Route path="/invitation-error" element={<p>Invalid Invitation</p>} />
+              {/* Add a catch-all route for unknown paths */}
+              <Route path="*" element={<p>Not Found</p> } />
             </Routes>
           </div>
         ) : <Auth />

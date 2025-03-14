@@ -6,13 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import {
     Dialog,
     DialogTrigger,
-    DialogClose,
     DialogContent,
     DialogHeader,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
-import InviteUserForm from "./InviteUserForm";
+import InviteUserForm from "../Invitation/InviteUserForm";
 import IssueList from "./IssueList";
 import ChatBox from "./ChatBox";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,8 +24,7 @@ const ProjectDetail = () => {
 
     // Safely access nested properties using optional chaining
     const fullName = project?.owner?.fullName;
-    const members = project?.team?.users || []; // Default to an empty array if undefined
-
+    const members = project?.team?.members;
     useEffect(() => {
         dispatch(fetchProjectById(id));
     }, [dispatch, id]);
@@ -55,10 +53,10 @@ const ProjectDetail = () => {
                                 <div className="flex">
                                     <p className="w-36">Members: </p>
                                     <div className="flex items-center gap-2">
-                                        {members.map((member) => (
+                                        {members?.map((member) => (
                                             <Avatar className="cursor-pointer" key={member.id}>
                                                 <AvatarFallback>
-                                                    {member.fullName[0] || "U"}
+                                                    {member.fullName[0]}
                                                 </AvatarFallback>
                                             </Avatar>
                                         ))}
@@ -78,9 +76,6 @@ const ProjectDetail = () => {
                                         <DialogContent>
                                             <DialogHeader>Invite User</DialogHeader>
                                             <InviteUserForm />
-                                            <DialogClose asChild>
-                                                <Button variant="outline">Close</Button>
-                                            </DialogClose>
                                         </DialogContent>
                                     </Dialog>
                                 </div>

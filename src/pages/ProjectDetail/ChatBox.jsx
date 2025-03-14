@@ -60,7 +60,7 @@ const ChatBox = () => {
                 {item.sender.id !== auth.user?.id ? (
                   <>
                     <Avatar>
-                      <AvatarFallback>R</AvatarFallback>
+                      <AvatarFallback>{item.sender?.fullName[0]}</AvatarFallback>
                     </Avatar>
                     <div className="space-y-2 py-2 px-5 border rounded-ss-2xl rounded-e-xl">
                       <p>{item.sender?.fullName}</p>
@@ -74,7 +74,7 @@ const ChatBox = () => {
                       <p>{item.content}</p>
                     </div>
                     <Avatar>
-                      <AvatarFallback>R</AvatarFallback>
+                      <AvatarFallback>{item.sender?.fullName[0]}</AvatarFallback>
                     </Avatar>
                   </>
                 )}
