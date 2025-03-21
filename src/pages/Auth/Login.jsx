@@ -30,6 +30,9 @@ const CustomFormField = ({ name, placeholder, type = "text", control, rules }) =
 
 const Login = () => {
   const dispatch = useDispatch();
+ localStorage.removeItem("jwtToken");
+ sessionStorage.removeItem("jwtToken");
+
   const form = useForm({
     defaultValues: {
       email: "",
