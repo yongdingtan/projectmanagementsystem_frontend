@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 import api from "../../config/api";
 import {
     ACCEPT_INVITATION_FAILURE,

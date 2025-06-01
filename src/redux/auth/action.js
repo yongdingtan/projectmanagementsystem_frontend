@@ -77,5 +77,7 @@ export const getUserById = (userId) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
     dispatch({ type: actionType.LOGOUT })
+    localStorage.removeItem("jwt")
+    setAuthToken(null) // Clear the Axios headers
     localStorage.clear()
 }

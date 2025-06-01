@@ -20,27 +20,30 @@ import {
   
   // Custom hook for dark mode logic
   const useDarkMode = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    // Initialize state based on localStorage or system preference
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+      // Check localStorage first
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        return savedTheme === "dark";
+      }
+      // Fallback to system preference
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    });
   
     useEffect(() => {
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") {
+      // Apply the theme immediately when component mounts
+      if (isDarkMode) {
         document.documentElement.classList.add("dark");
-        setIsDarkMode(true);
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
       }
-    }, []);
+    }, [isDarkMode]);
   
     const toggleDarkMode = () => {
-      const html = document.documentElement;
-      if (html.classList.contains("dark")) {
-        html.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-        setIsDarkMode(false);
-      } else {
-        html.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-        setIsDarkMode(true);
-      }
+      setIsDarkMode(!isDarkMode);
     };
   
     return { isDarkMode, toggleDarkMode };
@@ -54,6 +57,7 @@ import {
   
     const handleLogout = () => {
       dispatch(logout());
+      navigate("/", { replace: true });
     };
   
     return (
