@@ -1,6 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Trash2 } from "lucide-react"; // Optional: icon for delete
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
@@ -48,6 +48,9 @@ const ChatBox = () => {
   const handleDelete = (id) => {
     dispatch(deleteMessage(id));
   };
+
+  console.log("auth user:",auth.user)
+
   return (
     <div className="sticky">
       <div className="border rounded-lg">
@@ -78,10 +81,10 @@ const ChatBox = () => {
                       <p>{item.content}</p>
                       <button
                         onClick={() => handleDelete(item.id)} // Use item.id not index!
-                        className="absolute top-1 right-1 text-red-500 hover:text-red-700"
+                        className="absolute top-0.5 right-1 text-red-400 hover:text-red-50"
                         title="Delete message"
                       >
-                        <Trash2 size={14} />
+                        <X size={16} />
                       </button>
                     </div>
                     <Avatar>
