@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { ChevronRightIcon } from "lucide-react"
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +58,7 @@ const CreateCommentForm = ({ issueId }) => { // Destructure issueId from props
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Post comment</Button>
+                    <Button variant="secondary" size="icon" className="size-8" type="submit"><ChevronRightIcon /></Button>
                 </form>
             </Form>
         </div>

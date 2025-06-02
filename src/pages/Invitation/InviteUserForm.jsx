@@ -29,8 +29,8 @@ const InviteUserForm = () => {
               <FormControl>
                 <Input {...field}
                   type="text"
-                  className="border w-full border-gray-700 py-5 px-5"
-                  placeholder="User Email"/>
+                  className="border w-full border-gray-700 py-3 px-3"
+                  placeholder="enter user email here"/>
               </FormControl>
               <FormMessage />
             </FormItem>)} />

@@ -12,6 +12,7 @@ const ChatReducer = (state = initialState, action) => {
         case actionType.FETCH_MESSAGES_REQUEST:
         case actionType.SEND_MESSAGE_REQUEST:
         case actionType.FETCH_CHAT_MESSAGES_REQUEST:
+        case actionType.DELETE_MESSAGE_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -30,6 +31,12 @@ const ChatReducer = (state = initialState, action) => {
                 loading: false,
                 message: [...state.message, action.message]
             }
+        case actionType.DELETE_MESSAGE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                message: state.message.filter((msg) => msg.id !== action.payload)
+            }
         case actionType.FETCH_CHAT_BY_PROJECT_SUCCESS:
             return {
                 ...state,
@@ -39,6 +46,7 @@ const ChatReducer = (state = initialState, action) => {
         case actionType.FETCH_MESSAGES_FAILURE:
         case actionType.SEND_MESSAGE_FAILURE:
         case actionType.FETCH_CHAT_MESSAGES_FAILURE:
+        case actionType.DELETE_MESSAGE_FAILURE:
             return {
                 ...state,
                 loading: false,

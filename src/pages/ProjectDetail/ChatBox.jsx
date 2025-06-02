@@ -1,17 +1,18 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Trash2 } from "lucide-react"; // Optional: icon for delete
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { useEffect, useState, useCallback, useRef } from "react"; // Added useRef
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatByProject, fetchChatMessages, sendMessage } from "../../redux/chat/action";
+import { fetchChatByProject, fetchChatMessages, sendMessage, deleteMessage } from "../../redux/chat/action";
 import { useParams } from "react-router-dom";
 
 const ChatBox = () => {
   const [message, setMessage] = useState('');
   const auth = useSelector(state => state.auth);
-  const chat = useSelector(state => state.chat);  
+  const chat = useSelector(state => state.chat);
   const { id } = useParams();
   const dispatch = useDispatch();
   const lastMessageRef = useRef(null); // Ref for the last message
@@ -44,6 +45,9 @@ const ChatBox = () => {
     setMessage(e.target.value);
   }, []);
 
+  const handleDelete = (id) => {
+    dispatch(deleteMessage(id));
+  };
   return (
     <div className="sticky">
       <div className="border rounded-lg">
@@ -69,9 +73,16 @@ const ChatBox = () => {
                   </>
                 ) : (
                   <>
-                    <div className="space-y-2 py-2 px-5 border rounded-se-2xl rounded-s-xl">
+                    <div className="relative space-y-2 py-2 px-5 border rounded-se-2xl rounded-s-xl">
                       <p>{item.sender?.fullName}</p>
                       <p>{item.content}</p>
+                      <button
+                        onClick={() => handleDelete(item.id)} // Use item.id not index!
+                        className="absolute top-1 right-1 text-red-500 hover:text-red-700"
+                        title="Delete message"
+                      >
+                        <Trash2 size={14} />
+                      </button>
                     </div>
                     <Avatar>
                       <AvatarFallback>{item.sender?.fullName[0]}</AvatarFallback>
