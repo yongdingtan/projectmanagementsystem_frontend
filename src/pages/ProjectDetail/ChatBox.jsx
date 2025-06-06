@@ -49,8 +49,6 @@ const ChatBox = () => {
     dispatch(deleteMessage(id));
   };
 
-  console.log("auth user:",auth.user)
-
   return (
     <div className="sticky">
       <div className="border rounded-lg">

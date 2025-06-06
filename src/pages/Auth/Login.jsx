@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth/action";
+import { useEffect } from "react";
 
 // Reusable FormField component with validation
 const CustomFormField = ({ name, placeholder, type = "text", control, rules }) => (
@@ -30,8 +31,16 @@ const CustomFormField = ({ name, placeholder, type = "text", control, rules }) =
 
 const Login = () => {
   const dispatch = useDispatch();
- localStorage.removeItem("jwtToken");
- sessionStorage.removeItem("jwtToken");
+  localStorage.removeItem("jwtToken");
+  sessionStorage.removeItem("jwtToken");
+
+  const auth = useSelector((state) => state.auth); // 👈 get auth state
+  // Watch for login failure
+  useEffect(() => {
+    if (auth.error) {
+    alert("Login failed. User not found or password is incorrect."); // Display error message
+    }
+  }, [auth.error]);
 
   const form = useForm({
     defaultValues: {
